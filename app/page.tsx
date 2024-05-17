@@ -1,19 +1,19 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Todo from './components/Todo';
-import { TodoInterface, AddTodoInterface } from './models/todoInterface';
+import { TodoInterface, AddTodoInterface, editTodoInterface } from './models/todoInterface';
 
 const IndexPage: React.FC = () => {
   const [todos, setTodos] = useState<TodoInterface[]>([]);
   const [newTodo, setNewTodo] = useState<AddTodoInterface>({ title: '', description: '', completed: false });
-  const [isEditing, setIsEditing] = useState<number | null>(null);
+  const [isEditing, setIsEditing] = useState<editTodoInterface | null>(null);
 
   useEffect(() => {
     fetchTodos();
   }, []);
 
   const fetchTodos = async () => {
-    const response = await fetch('http://localhost:3000/todos');
+    const response = await fetch('https://todos-typescript-nu30.onrender.com/todos');
     const data = await response.json();
     setTodos(data);
   };
@@ -28,17 +28,18 @@ const IndexPage: React.FC = () => {
 
   const addTodo = async () => {
     try {
-      const response = await fetch('http://localhost:3000/todos', {
+      const response = await fetch('https://todos-typescript-nu30.onrender.com/todos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newTodo),
       });
+      
       if (response.ok) {
-        const data = await response.json();
-        setTodos([...todos, data]);
-        setNewTodo({ title: '', description: '', completed: false });
+        // Assume success and update UI without waiting for server response
+        setTodos([...todos, newTodo]); // Update UI with new todo
+        setNewTodo({ title: '', description: '', completed: false }); // Reset new todo form
       } else {
         console.error('Failed to add todo');
       }
@@ -46,6 +47,8 @@ const IndexPage: React.FC = () => {
       console.error('Failed to add todo:', error);
     }
   };
+  
+  
 
   const startEditing = (todo: TodoInterface) => {
     setNewTodo(todo);
@@ -56,7 +59,7 @@ const IndexPage: React.FC = () => {
     if (isEditing === null) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/todos/${isEditing}`, {
+      const response = await fetch(`https://todos-typescript-nu30.onrender.com/todos/${isEditing}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +81,7 @@ const IndexPage: React.FC = () => {
 
   const deleteTodo = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:3000/todos/${id}`, {
+      const response = await fetch(`https://todos-typescript-nu30.onrender.com/todos/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
