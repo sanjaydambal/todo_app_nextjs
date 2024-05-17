@@ -5,7 +5,7 @@ interface TodoProps {
   todo: TodoInterface;
   onUpdate: (id: number, todo: TodoInterface) => void;
   onDelete: (id: number) => void;
-  onEdit: (todo: TodoInterface) => void; 
+  onEdit: (todo: TodoInterface) => void; // Add this prop
 }
 
 const Todo: React.FC<TodoProps> = ({ todo, onUpdate, onDelete, onEdit }) => {

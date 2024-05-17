@@ -5,8 +5,13 @@ import { TodoInterface, AddTodoInterface, editTodoInterface } from './models/tod
 
 const IndexPage: React.FC = () => {
   const [todos, setTodos] = useState<TodoInterface[]>([]);
-  const [newTodo, setNewTodo] = useState<AddTodoInterface>({ title: '', description: '', completed: false });
-  const [isEditing, setIsEditing] = useState<editTodoInterface | null>(null);
+  const [newTodo, setNewTodo] = useState<AddTodoInterface>({ 
+    id: 0,  
+    title: '', 
+    description: '', 
+    completed: false 
+  });
+  const [isEditing, setIsEditing] = useState<number | null>(null);
 
   useEffect(() => {
     fetchTodos();
@@ -39,7 +44,7 @@ const IndexPage: React.FC = () => {
       if (response.ok) {
         // Assume success and update UI without waiting for server response
         setTodos([...todos, newTodo]); // Update UI with new todo
-        setNewTodo({ title: '', description: '', completed: false }); // Reset new todo form
+        setNewTodo({id:0, title: '', description: '', completed: false }); // Reset new todo form
       } else {
         console.error('Failed to add todo');
       }
@@ -69,7 +74,7 @@ const IndexPage: React.FC = () => {
       if (response.ok) {
         const updatedTodos = todos.map(todo => todo.id === isEditing ? { ...todo, ...newTodo } : todo);
         setTodos(updatedTodos);
-        setNewTodo({ title: '', description: '', completed: false });
+        setNewTodo({id:0, title: '', description: '', completed: false });
         setIsEditing(null);
       } else {
         console.error('Failed to update todo');

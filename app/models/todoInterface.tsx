@@ -1,5 +1,5 @@
 export interface TodoInterface {
-    id?: number;
+    id: number;
     title: string;
     description: string;
     completed: boolean;
@@ -12,7 +12,7 @@ export interface TodoInterface {
   }
   
   export interface AddTodoInterface {
-    id?: number; 
+    id: number; 
     title: string;
     description: string;
     completed: boolean;
